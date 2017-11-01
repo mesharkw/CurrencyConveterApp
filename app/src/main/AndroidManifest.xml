@@ -12,6 +12,19 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+        <activity
+            android:name=".ConvertActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <activity android:name=".FavouriteActivity"
+            android:parentActivityName=".MainActivity"/>
+
+        <activity
+            android:name=".HowItWorksActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -21,13 +34,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ConvertActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".FavouriteActivity"/>
-        <activity
-            android:name=".HowItWorksActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+
+
+
     </application>
 
 </manifest>
