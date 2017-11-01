@@ -1,18 +1,23 @@
 package com.capitalwriting.currencyconveter;
 
+import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.support.v7.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 
@@ -22,6 +27,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    DatabaseHelper myDb;
     private AlbumsAdapter adapter;
     private List<Album> albumList;
 
@@ -31,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initCollapsingToolbar();
+        myDb= new DatabaseHelper(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -82,95 +89,59 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.phone:
+                                Intent FavIntent = new Intent(MainActivity.this, FavouriteActivity.class);
+                                startActivity(FavIntent);
+
+                                return true;
+
+                            case R.id.whatsapp:
+                                Intent HowIntent = new Intent(MainActivity.this, HowItWorksActivity.class);
+                                startActivity(HowIntent);
+
+                                return true;
+
+                        }
+                        return true;
+                    }
+                });
     }
 
     /**
      * Adding few albums for testing
      */
     private void prepareAlbums() {
-        int[] covers = new int[]{
-                R.drawable.bitcoin,
-                R.drawable.usd,
-                R.drawable.euro,
-                R.drawable.cny,
-                R.drawable.ethereum,
-                R.drawable.cad,
-                R.drawable.krw,
-                R.drawable.naira,
-                R.drawable.ltcjpg,
-                R.drawable.rub,
-                R.drawable.rub,
-                R.drawable.bitcoin,
-                R.drawable.usd,
-                R.drawable.euro,
-                R.drawable.cny,
-                R.drawable.ethereum,
-                R.drawable.cad,
-                R.drawable.krw,
-                R.drawable.naira,
-                R.drawable.ltcjpg};
+        Cursor res = myDb.getAllData();
+        if (res.getCount()==0) {
+            //show message
+            showMessage("Favourites", "Nothing found! Please add favourite Currencies.");
+            return;
+        }
+        StringBuffer buffer = new StringBuffer();
+        Album album;
+        while(res.moveToNext()) {
+            album = new Album();
+            buffer.append("Name: "+res.getString(1)+ "\n");
+            album.setName(res.getString(1));
+            albumList.add(album);
 
-        Album a = new Album("BTC", 13, covers[0]);
-        albumList.add(a);
+        }
 
-        a = new Album("USD", 8, covers[1]);
-        albumList.add(a);
+                AlbumsAdapter adapter = new AlbumsAdapter(getApplicationContext(),albumList);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
 
-        a = new Album("EUR", 11, covers[2]);
-        albumList.add(a);
+            }
 
-        a = new Album("CNY", 12, covers[3]);
-        albumList.add(a);
 
-        a = new Album("ETH", 14, covers[4]);
-        albumList.add(a);
-
-        a = new Album("CAD", 1, covers[5]);
-        albumList.add(a);
-
-        a = new Album("KTW", 11, covers[6]);
-        albumList.add(a);
-
-        a = new Album("N", 14, covers[7]);
-        albumList.add(a);
-
-        a = new Album("LTC", 11, covers[8]);
-        albumList.add(a);
-
-        a = new Album("RUB", 17, covers[9]);
-        albumList.add(a);
-        a = new Album("XMR", 8, covers[10]);
-        albumList.add(a);
-
-        a = new Album("GOLD", 11, covers[11]);
-        albumList.add(a);
-
-        a = new Album("GBP", 12, covers[12]);
-        albumList.add(a);
-
-        a = new Album("CHF", 14, covers[13]);
-        albumList.add(a);
-
-        a = new Album("DASH", 1, covers[14]);
-        albumList.add(a);
-
-        a = new Album("ZEC", 11, covers[15]);
-        albumList.add(a);
-
-        a = new Album("CLP", 14, covers[16]);
-        albumList.add(a);
-
-        a = new Album("UGX", 11, covers[17]);
-        albumList.add(a);
-
-        a = new Album("KGS", 17, covers[18]);
-        albumList.add(a);
-
-        a = new Album("UZS", 17, covers[19]);
-        albumList.add(a);
-
-        adapter.notifyDataSetChanged();
-    }
 
     /**
      * RecyclerView item decoration - give equal margin around grid item
@@ -216,5 +187,14 @@ public class MainActivity extends AppCompatActivity {
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    public void showMessage (String title, String Message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(Message);
+        builder.show();
+
     }
 }

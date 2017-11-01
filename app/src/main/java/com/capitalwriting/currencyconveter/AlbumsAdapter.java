@@ -6,10 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -22,13 +20,13 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     private List<Album> albumList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, count;
-        public ImageView thumbnail;
+        public TextView title;
+        public Spinner thumbnail;
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
-            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            title =  view.findViewById(R.id.title);
+            thumbnail =  view.findViewById(R.id.thumbnail);
         }
     }
 
@@ -50,19 +48,21 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Album album = albumList.get(position);
         holder.title.setText(album.getName());
-
-        // loading album cover using Glide library
-        Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
-
-        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+        holder.title.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
 
                 Intent conIntent  = new Intent(mContext, ConvertActivity.class);
                 conIntent.putExtra("From", holder.title.getText());
                 mContext.startActivity(conIntent);
+
             }
         });
+
+        // loading album cover using Glide library
+//        Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
+
+
     }
 
     @Override

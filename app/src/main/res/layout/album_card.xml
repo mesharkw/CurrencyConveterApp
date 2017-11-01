@@ -16,23 +16,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <TextView
+                android:id="@+id/thumbnail1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="EXchange Rate :"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Spinner
                 android:id="@+id/thumbnail"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/album_cover_height"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:scaleType="fitXY" />
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/thumbnail1"
+                android:layout_centerHorizontal="true"/>
+
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/thumbnail"
-                android:paddingLeft="@dimen/album_title_padding"
-                android:paddingRight="@dimen/album_title_padding"
-                android:textColor="@color/album_title"
-                android:textSize="@dimen/album_title" />
+                android:text="Coins"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/album_title"/>
 
 
 

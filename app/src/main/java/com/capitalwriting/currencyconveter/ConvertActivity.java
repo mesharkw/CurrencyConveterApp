@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ public class ConvertActivity extends AppCompatActivity {
     private EditText Value;
     private Button Convert;
     private TextView Result;
+    private ProgressBar progressBar;
     private String To="",From="",conversionRate;
     private double ResultRate;
 
@@ -41,6 +43,7 @@ public class ConvertActivity extends AppCompatActivity {
         Value = (EditText) findViewById(R.id.value);
         Convert = (Button) findViewById(R.id.convert);
         Result = (TextView) findViewById(R.id.result);
+        progressBar = findViewById(R.id.progress);
         if (savedInstanceState == null){
             Bundle extras = getIntent().getExtras();
             if (extras == null){
@@ -56,7 +59,7 @@ public class ConvertActivity extends AppCompatActivity {
 
 
         BaseCurrency = (Spinner) findViewById(R.id.baseCurrency);
-        final String[] items = new String[]{"--Click to Select---","USD","BTC","EUR","CNY","ETH","CAD","KTW","N","LTC","RUB","XMR","GOLD"
+        final String[] items = new String[]{"--Click to Select---","USD","NGN","KES","BTC","EUR","ETH","CAD","BTG","LTC","RUB","XMR","GOLD"
                 ,"GBP","CHF","DASH","ZEC","CLP","UGX","KGS","UZS"};
         ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, items);
         BaseCurrency.setAdapter(adapter3);
@@ -97,6 +100,7 @@ public class ConvertActivity extends AppCompatActivity {
          */
         @Override
         protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
             super.onPreExecute();
         }
 
@@ -134,9 +138,10 @@ public class ConvertActivity extends AppCompatActivity {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String result) {
+            progressBar.setVisibility(View.GONE);
             Log.d("HELLIX", conversionRate);
 
-            ResultRate=Double.parseDouble(conversionRate)*Double.parseDouble(Value.getText().toString());
+            ResultRate=(Double.parseDouble(Value.getText().toString())) * (Double.parseDouble(conversionRate));
             Result.setVisibility(View.VISIBLE);
 
             Result.setText(Double.toString(ResultRate));

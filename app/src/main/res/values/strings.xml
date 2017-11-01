@@ -6,4 +6,16 @@
     <string name="backdrop_title">CYPTOCURENCY</string>
     <string name="backdrop_subtitle">For latest Exchange rates</string>
     <string name="convert">Convert</string>
+
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GET STARTED</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="_3245678">3245678</string>
+    <string name="convert1">CONVERT</string>
+    <string name="next1">next</string>
+    <string name="skip1">skip</string>
+    <string name="euro">EURO</string>
+    <string name="monero">Monero</string>
+
 </resources>
