@@ -24,7 +24,7 @@
         <activity
             android:name=".ConvertActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".FavouriteActivity"></activity>
+        <activity android:name=".FavouriteActivity"/>
         <activity
             android:name=".HowItWorksActivity"
             android:theme="@style/AppTheme.NoActionBar" />
